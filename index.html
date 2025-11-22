@@ -67,13 +67,28 @@
                     <span class="level-dot"></span>
                 </div>
                 <button class="btn-icon menu-btn">⋮</button>
-                <div class="game-controls">
-                    <button class="btn-long-press" id="connect-btn">
-                        <span class="progress-ring"></span>
-                        <span class="label">We Connected</span>
-                    </button>
-                    <button class="btn-secondary pass-btn hidden">Pass</button>
+            </header>
+
+            <div class="card-container">
+                <div class="card" id="active-card">
+                    <div class="card-content">
+                        <div class="card-level">Level 1: Perception</div>
+                        <h3 class="card-question">Question goes here...</h3>
+                        <div class="card-subtext">Sub-question goes here...</div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-text dig-deeper-btn">Dig Deeper</button>
+                    </div>
                 </div>
+            </div>
+
+            <div class="game-controls">
+                <button class="btn-long-press" id="connect-btn">
+                    <span class="progress-ring"></span>
+                    <span class="label">We Connected</span>
+                </button>
+                <button class="btn-secondary pass-btn hidden">Pass</button>
+            </div>
         </div>
     </template>
 
