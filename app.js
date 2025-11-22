@@ -110,18 +110,27 @@ function initializeGame() {
         ...level2.filter(filterFn).map(c => ({ ...c, level: 2 })),
         ...level3.filter(filterFn).map(c => ({ ...c, level: 3 }))
     ];
+
+    console.log("Game Initialized. Queue length:", state.deckQueue.length);
 }
 
 function setupGameView(view) {
     const container = view.querySelector('.view');
     container.classList.add(state.currentDeck.theme);
 
+    // Safety Check
+    if (state.deckQueue.length === 0) {
+        console.error("Deck queue is empty!");
+        alert("Error: Deck is empty. Please try another deck.");
+        navigateTo('home');
+        return;
+    }
+
     // Initial Card Render
-    renderNextCard(view);
+    renderNextCard(container);
 
     // Long Press Logic
     const btn = view.querySelector('#connect-btn');
-    const ring = view.querySelector('.progress-ring');
     let pressTimer;
     let isPressing = false;
 
@@ -135,14 +144,15 @@ function setupGameView(view) {
 
         pressTimer = setTimeout(() => {
             if (navigator.vibrate) navigator.vibrate(50);
-            completeCard(view);
-            isPressing = false; // Reset after success
+            // Query live DOM for completion
+            const activeView = document.querySelector('.view-game');
+            if (activeView) completeCard(activeView);
+            isPressing = false;
         }, 800);
     };
 
     const cancelPress = (e) => {
         if (!isPressing) return;
-
         e.preventDefault();
         isPressing = false;
         btn.classList.remove('pressing');
@@ -155,19 +165,22 @@ function setupGameView(view) {
     btn.addEventListener('mouseleave', cancelPress);
     btn.addEventListener('touchend', cancelPress);
     btn.addEventListener('touchcancel', cancelPress);
-    btn.addEventListener('contextmenu', e => e.preventDefault()); // Prevent right-click menu
+    btn.addEventListener('contextmenu', e => e.preventDefault());
 
     // Dig Deeper
     view.querySelector('.dig-deeper-btn').onclick = () => {
-        view.querySelector('.card-subtext').classList.toggle('visible');
+        // Query live DOM
+        const activeCard = document.querySelector('#active-card');
+        if (activeCard) activeCard.querySelector('.card-subtext').classList.toggle('visible');
     };
 
-    // Pass Button (Mending Deck Only)
+    // Pass Button
     if (state.currentDeck.id === 'mending') {
         const passBtn = view.querySelector('.pass-btn');
         passBtn.classList.remove('hidden');
         passBtn.onclick = () => {
-            renderNextCard(view); // Skip without penalty
+            const activeView = document.querySelector('.view-game');
+            if (activeView) renderNextCard(activeView);
         };
     }
 
@@ -177,30 +190,25 @@ function setupGameView(view) {
     };
 }
 
-function renderNextCard(view) {
+function renderNextCard(viewElement) {
     if (state.deckQueue.length === 0) {
         navigateTo('decompression');
         return;
     }
 
-    // Get next card that matches current level (or lower if backlog)
-    // Simple logic: just take top, but check level progression
     let card = state.deckQueue.shift();
 
-    // Update Level State
     if (card.level > state.currentLevel) {
         state.currentLevel = card.level;
         state.cardsPlayedInLevel = 0;
-        updateLevelIndicators(view);
+        updateLevelIndicators(viewElement);
     }
 
-    // Render
-    const cardEl = view.querySelector('#active-card');
+    const cardEl = viewElement.querySelector('#active-card');
     const qEl = cardEl.querySelector('.card-question');
     const subEl = cardEl.querySelector('.card-subtext');
     const levelEl = cardEl.querySelector('.card-level');
 
-    // Solo Mode Text Replacement
     let qText = card.q;
     if (state.isSolo) {
         qText = qText.replace(/you/g, "I").replace(/your/g, "my");
@@ -213,7 +221,7 @@ function renderNextCard(view) {
 
     // Timer Logic
     const timerContainer = cardEl.querySelector('.timer-container');
-    if (timerContainer) timerContainer.remove(); // Clear previous
+    if (timerContainer) timerContainer.remove();
 
     if (card.type === 'timer') {
         const timerEl = document.createElement('div');
@@ -238,9 +246,8 @@ function renderNextCard(view) {
             startBtn.classList.add('hidden');
             let timeLeft = card.duration;
 
-            // Reset Animation
             progressCircle.style.animation = 'none';
-            progressCircle.offsetHeight; /* trigger reflow */
+            progressCircle.offsetHeight;
             progressCircle.style.animation = `countdown ${timeLeft}s linear forwards`;
 
             const interval = setInterval(() => {
@@ -249,13 +256,11 @@ function renderNextCard(view) {
                 if (timeLeft <= 0) {
                     clearInterval(interval);
                     timerText.textContent = "Done";
-                    // Optional: Haptic feedback or sound
                 }
             }, 1000);
         };
     }
 
-    // Animation Reset
     cardEl.style.transform = 'scale(0.95) translateY(10px)';
     cardEl.style.opacity = '0';
     setTimeout(() => {
@@ -264,18 +269,11 @@ function renderNextCard(view) {
     }, 50);
 }
 
-function completeCard(view) {
+function completeCard(viewElement) {
     state.cardsPlayedInLevel++;
-
-    // Visual Feedback
-    const btn = view.querySelector('#connect-btn');
-    btn.classList.remove('pressing');
-
-    // Check Level Progression (Unlock next level after 5 cards)
-    // In this simple queue implementation, the queue is already sorted by level.
-    // We just render the next one.
-
-    renderNextCard(view);
+    const btn = viewElement.querySelector('#connect-btn');
+    if (btn) btn.classList.remove('pressing');
+    renderNextCard(viewElement);
 }
 
 function updateLevelIndicators(view) {
