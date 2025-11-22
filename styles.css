@@ -404,7 +404,7 @@ input:checked+.slider:before {
 }
 
 .timer-text {
-    position: absolute;
+    justify-content: center;
     font-size: 1.5rem;
     font-weight: 700;
 }

@@ -232,11 +232,13 @@ function renderNextCard(viewElement) {
         timerEl.className = 'timer-container';
         timerEl.innerHTML = `
             <div class="timer-circle">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" class="timer-bg"></circle>
-                    <circle cx="50" cy="50" r="45" class="timer-progress"></circle>
+            <span class="timer-text">${card.duration}s</span>
+            <br>
+                <svg viewBox="0 0 70 70">
+                    <circle cx="35" cy="35" r="20" class="timer-bg"></circle>
+                    <circle cx="35" cy="35" r="20" class="timer-progress"></circle>
                 </svg>
-                <span class="timer-text">${card.duration}s</span>
+                
             </div>
             <button class="btn-secondary start-timer-btn">Start Timer</button>
         `;
