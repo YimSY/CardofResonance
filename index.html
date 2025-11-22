@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Project Resonance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Views will be injected here -->
+    </div>
+
+    <!-- Templates -->
+    <template id="view-home">
+        <div class="view view-home">
+            <header class="home-header">
+                <h1>Resonance</h1>
+                <p>A Psychological Container for Connection</p>
+            </header>
+            <div class="deck-grid">
+                <!-- Decks injected via JS -->
+            </div>
+        </div>
+    </template>
+
+    <template id="view-setup">
+        <div class="view view-setup">
+            <header class="setup-header">
+                <button class="btn-icon back-btn">←</button>
+                <h2 id="setup-deck-name">Deck Name</h2>
+            </header>
+            <div class="setup-options">
+                <div class="option-group">
+                    <h3>Players</h3>
+                    <div class="toggle-group" id="player-count">
+                        <button class="toggle-btn active" data-value="2">Duo</button>
+                        <button class="toggle-btn" data-value="group">Group</button>
+                        <button class="toggle-btn" data-value="1">Solo</button>
+                    </div>
+                </div>
+                <div class="option-group">
+                    <h3>Safety</h3>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="light-mode-toggle">
+                        <span class="slider"></span>
+                        <span class="label-text">Light Mode (No #Heavy topics)</span>
+                    </label>
+                </div>
+            </div>
+            <button class="btn-primary start-btn">Enter Container</button>
+        </div>
+    </template>
+
+    <template id="view-game">
+        <div class="view view-game">
+            <header class="game-header">
+                <div class="level-indicator">
+                    <span class="level-dot active"></span>
+                    <span class="level-dot"></span>
+                    <span class="level-dot"></span>
+                </div>
+                <button class="btn-icon menu-btn">⋮</button>
+            </header>
+
+            <div class="card-container">
+                <div class="card" id="active-card">
+                    <div class="card-content">
+                        <div class="card-level">Level 1: Perception</div>
+                        <h3 class="card-question">Question goes here...</h3>
+                        <div class="card-subtext hidden">Sub-question goes here...</div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-text dig-deeper-btn">Dig Deeper</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button class="btn-long-press" id="connect-btn">
+                    <span class="progress-ring"></span>
+                    <span class="label">We Connected</span>
+                </button>
+                <button class="btn-secondary pass-btn hidden">Pass</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-decompression">
+        <div class="view view-decompression">
+            <div class="decompression-content">
+                <h2>Session Complete</h2>
+                <p class="ritual-text">Take a deep breath together.</p>
+                <div class="breathing-circle"></div>
+                <button class="btn-primary home-btn">Return Home</button>
+            </div>
+        </div>
+    </template>
+
+    <script src="decks.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
