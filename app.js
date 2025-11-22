@@ -68,15 +68,19 @@ function setupSetupView(view, { deck }) {
     view.querySelector('.view').classList.add(deck.theme);
 
     // Player Count Logic
-    const btns = view.querySelectorAll('.toggle-btn');
-    btns.forEach(btn => {
-        btn.onclick = () => {
-            btns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            state.players = btn.dataset.value;
-            state.isSolo = state.players === '1';
-        };
-    });
+
+    if (state.currentDeck.id === 'mending') {
+        const btns = view.querySelectorAll('.toggle-btn');
+        btns.forEach(btn => {
+            btn.onclick = () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.players = btn.dataset.value;
+                state.isSolo = state.players === '1';
+            };
+        });
+    }
+
 
     // Light Mode Logic
     const lightModeToggle = view.querySelector('#light-mode-toggle');
@@ -211,7 +215,7 @@ function renderNextCard(viewElement) {
 
     let qText = card.q;
     if (state.isSolo) {
-        qText = qText.replace(/you/g, "I").replace(/your/g, "my");
+        qText = qText.replace(/you/g, "I").replace(/your/g, "my").replace(/yourself/g, "myself");
     }
 
     qEl.textContent = qText;

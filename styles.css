@@ -45,26 +45,6 @@
 
 body {
     font-family: var(--font-main);
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    height: 100vh;
-    overflow: hidden;
-}
-
-#app {
-    height: 100%;
-    width: 100%;
-    position: relative;
-}
-
-z-index: 1;
-}
-
-/* Typography */
-h1 {
-    font-weight: 700;
-    font-size: 2rem;
-    margin-bottom: var(--spacing-sm);
 }
 
 h2 {
@@ -151,7 +131,7 @@ button:active {
 
 .deck-card {
     background: var(--surface);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-sm);
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -310,10 +290,11 @@ input:checked+.slider:before {
 
 
 .card {
+
     background: var(--surface);
     width: 100%;
-    max-width: 340px;
-    aspect-ratio: 3/4;
+    max-width: 500px;
+    aspect-ratio: 3/3;
     border-radius: 24px;
     padding: var(--spacing-xl);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
